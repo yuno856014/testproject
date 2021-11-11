@@ -1,0 +1,22 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<User> signInManager
+@inject RoleManager<IdentityRole> roleManager
+@{
+    var user = new User();
+    string name = null;
+    if (signInManager.IsSignedIn(User))
+    {
+        user = signInManager.UserManager.FindByNameAsync(User.Identity.Name).Result;
+        name = User.Identity.Name;
+    }
+    var role = User.IsInRole("Student");
+}
+
+@if(role)
+            {
+                <h1>@name</h1>
+}else
+            {
+                <h1>nohope</h1>
+            }
+
