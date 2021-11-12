@@ -1,4 +1,5 @@
-﻿using System;
+﻿using StudentManagement.Enums;
+using System;
 using System.Collections.Generic;
 
 #nullable disable
@@ -20,6 +21,7 @@ namespace StudentManagement.Entities
         public string PowerDev { get; set; }
         public string Think { get; set; }
         public int? ListEventId { get; set; }
+        public EventStatus? Status { get; set; }
         public string SchoolYear { get; set; }
 
         public virtual ListEvent ListEvent { get; set; }

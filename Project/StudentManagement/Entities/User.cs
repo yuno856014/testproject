@@ -23,6 +23,7 @@ namespace StudentManagement.Entities
         public int? ParentId { get; set; }
         public int? BellNotifiId { get; set; }
 
+
         public virtual BellNotification BellNotifi { get; set; }
         public virtual ICollection<Event> Events { get; set; }
         public virtual ICollection<Message> Messages { get; set; }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using StudentManagement.DBContexts;
 using StudentManagement.Entities;
 using StudentManagement.Models.Accounts;
@@ -27,6 +28,17 @@ namespace StudentManagement.Services
             this.roleManager = roleManager;
             this.context = context;
         }
+
+        public User Get(string userId)
+        {
+            return context.Users.FirstOrDefault(c => c.Id == userId);
+        }
+
+        public List<User> Gets()
+        {
+            return context.Users.Include(p => p.Events).ToList();
+        }
+
         [HttpGet]
         public List<User> GetUsers()
         {
@@ -42,7 +54,7 @@ namespace StudentManagement.Services
                 {
                     UserId = string.Empty,
                     Username = string.Empty,
-                    Message = "Người dùng không tồn tại!"
+                    Message = "User does not exist!"
                 };
             }
             var signInResult = await signInManager.PasswordSignInAsync(user, LoginUser.Password, LoginUser.RememberMe, false);
@@ -53,7 +65,7 @@ namespace StudentManagement.Services
                 {
                     UserId = user.Id,
                     Username = user.UserName,
-                    Message = "Đăng nhập thành công",
+                    Message = "Logged in successfully!",
                     Roles = roles.ToArray()
                 };
             }
@@ -61,7 +73,7 @@ namespace StudentManagement.Services
             {
                 UserId = string.Empty,
                 Username = string.Empty,
-                Message = "Đã xảy ra lỗi vui lòng thử lại sau!"
+                Message = "An error occurred, please try again later!"
             };
         }
 

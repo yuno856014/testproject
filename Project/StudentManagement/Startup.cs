@@ -33,6 +33,7 @@ namespace StudentManagement
             services.AddDbContext<StudentManagementContext>(options => options.UseSqlServer(stringConectdb));
             services.AddIdentity<User, IdentityRole>().
                                  AddEntityFrameworkStores<StudentManagementContext>();
+            services.AddScoped<IEventService, EventService>();
             services.AddScoped<IUserService, UserService>();
         }
 
@@ -60,7 +61,7 @@ namespace StudentManagement
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Account}/{action=Login}/{id?}");
+                    pattern: "{controller=Student}/{action=Index}/{id?}");
             });
         }
     }

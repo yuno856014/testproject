@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\buunv\\Desktop\\Project\\StudentManagement\\StudentManagement.csproj": {}
+    "C:\\Users\\buunv\\Desktop\\testproject\\Project\\StudentManagement\\StudentManagement.csproj": {}
   },
   "projects": {
-    "C:\\Users\\buunv\\Desktop\\Project\\StudentManagement\\StudentManagement.csproj": {
+    "C:\\Users\\buunv\\Desktop\\testproject\\Project\\StudentManagement\\StudentManagement.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\buunv\\Desktop\\Project\\StudentManagement\\StudentManagement.csproj",
+        "projectUniqueName": "C:\\Users\\buunv\\Desktop\\testproject\\Project\\StudentManagement\\StudentManagement.csproj",
         "projectName": "StudentManagement",
-        "projectPath": "C:\\Users\\buunv\\Desktop\\Project\\StudentManagement\\StudentManagement.csproj",
+        "projectPath": "C:\\Users\\buunv\\Desktop\\testproject\\Project\\StudentManagement\\StudentManagement.csproj",
         "packagesPath": "C:\\Users\\buunv\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\buunv\\Desktop\\Project\\StudentManagement\\obj\\",
+        "outputPath": "C:\\Users\\buunv\\Desktop\\testproject\\Project\\StudentManagement\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -64,6 +64,10 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[5.0.12, )"
+            },
+            "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
+              "target": "Package",
+              "version": "[5.0.2, )"
             }
           },
           "imports": [

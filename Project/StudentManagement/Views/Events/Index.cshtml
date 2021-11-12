@@ -1,0 +1,68 @@
+﻿@model IEnumerable<Event>
+@inject SignInManager<User> signInManager
+@{
+    var role = User.IsInRole("Doctor");
+    ViewData["Title"] = "Events List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<p>
+    <a class="btn btn-success" asp-action="Create"><i class="bi bi-plus-lg"></i>Create Event</a>
+</p>
+<div class="card">
+    <div class="card-body">
+        <table class="table table-bordered">
+            <thead class="thead-dark" style="background-color: #3e55df; color: white">
+                <tr>
+                    <th>
+                        School Year
+                    </th>
+                    <th>
+                        Event
+                    </th>
+                    <th>
+                        Status
+                    </th>
+                    <th>
+                        Comments
+                    </th>
+                    <th>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.User.UserSchoolYears</td>
+                        <td><i class="@item.ListEvent.Icon"></i> @item.ListEvent.ListEventName</td>
+                        <td>@item.Status</td>
+                        <td style="text-align:center"><a href="#"><i class="bi bi-bell-fill" style="font-size: 20px; color: #03a9f4"></i></a></td>
+                        <td style="text-align:center">
+                            @if (role)
+                            {
+                                if ((int)item.Status == 2)
+                                {
+                                    <a href="#"><i class="bi bi-check-lg" style="color: #03a9f4"></i></a>
+                                }
+                                else
+                                {
+                                    <i class="bi bi-check-lg" style="color:gray"></i>
+
+                                }
+                            }
+                            else
+                            {
+                                <a asp-controller="Events" asp-action="Edit" asp-route-eventId="@item.EventId"><i class="bi bi-pencil-fill" style="font-size: 20px; color: #03a9f4"></i></a>
+                                <a asp-controller="Events" asp-action="Remove" asp-route-eventID="@item.EventId"><i class="bi bi-trash-fill" style="font-size: 20px; color: #e12315 "></i></a>
+                            }
+
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+@section Scripts {
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" rel="stylesheet" />
+}

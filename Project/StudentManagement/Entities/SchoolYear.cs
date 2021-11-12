@@ -7,6 +7,7 @@ namespace StudentManagement.Entities
 {
     public partial class SchoolYear
     {
+
         public SchoolYear()
         {
             UserSchoolYears = new HashSet<UserSchoolYear>();

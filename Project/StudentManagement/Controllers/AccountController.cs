@@ -31,12 +31,10 @@ namespace StudentManagement.Controllers
                 {
                     if (result.Roles.Contains("Student"))
                     {
-                        TempData["RoleStudent"] = result.Roles[0];
-                        return RedirectToAction("Index", "Home");
+                        return RedirectToAction("Index", "Student");
                     }
                     else
                     {
-                        TempData["Roles"] = result.Roles;
                         return RedirectToAction("Privacy", "Home");
                     }
                 }
