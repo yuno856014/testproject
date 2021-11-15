@@ -47,19 +47,18 @@
                         <td style="text-align:center;">@item.SchoolYear</td>
                         <td><i class="@item.ListEvent.Icon"></i> @item.ListEvent.ListEventName</td>
                         <td style="text-align:center;">
-                            @*@if ((int)item.Status == 1)
-                                {
-                                    <a class="btn btn-info rounded-pill">@item.Status</a>
-                                }
-                                else if ((int)item.Status == 2)
-                                {
-                                    <a class="btn btn-warning rounded-pill">@item.Status</a>
-                                }
-                                else
-                                {
-                                    <a class="btn btn-success rounded-pill">@item.Status</a>
-                                }*@
-                            <a class="btn btn-info rounded-pill">@item.Status</a>
+                            @if ((int)item.Status == 1)
+                            {
+                                <a class="btn btn-info rounded-pill">@item.Status</a>
+                            }
+                            else if ((int)item.Status == 2)
+                            {
+                                <a class="btn btn-warning rounded-pill">@item.Status</a>
+                            }
+                            else
+                            {
+                                <a class="btn btn-success rounded-pill">@item.Status</a>
+                            }
                         </td>
                         <td style="text-align:center"><a asp-controller="Events" asp-action="Detail" asp-route-eventId="@item.EventId"><i class="bi bi-bell-fill" style="font-size: 20px; color: #03a9f4"></i></a></td>
                         <td style="text-align:center">

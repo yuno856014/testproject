@@ -827,3 +827,4 @@ C:\Users\buunv\Desktop\testproject\Project\StudentManagement\obj\Debug\net5.0\Ra
 C:\Users\buunv\Desktop\testproject\Project\StudentManagement\obj\Debug\net5.0\Razor\Views\Shared\_CreateEventLayout.cshtml.g.cs
 C:\Users\buunv\Desktop\testproject\Project\StudentManagement\obj\Debug\net5.0\Razor\Views\Events\Edit.cshtml.g.cs
 C:\Users\buunv\Desktop\testproject\Project\StudentManagement\obj\Debug\net5.0\Razor\Views\Events\Detail.cshtml.g.cs
+C:\Users\buunv\Desktop\testproject\Project\StudentManagement\obj\Debug\net5.0\StudentManagement.csproj.AssemblyReference.cache
