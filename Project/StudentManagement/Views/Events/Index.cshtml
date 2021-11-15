@@ -8,21 +8,32 @@
 <p>
     <a class="btn btn-success" asp-action="Create"><i class="bi bi-plus-lg"></i>Create Event</a>
 </p>
+
 <div class="card">
+    <div style=" height: 50px;">
+        <select style="height: 65%; border: none; border-bottom: 1px solid tomato; background: none; width: 5%; margin-right: 30px; margin-left: 30px;" asp-items="@ViewBag.SchoolYearId">
+        </select>
+        <select style="height: 65%;border: none; border-bottom:  1px solid tomato; background: none; width: 8%; margin-right: 30px;" asp-items="@ViewBag.ListEventId">
+        </select>
+        <input style="height: 65%;border: none; border-bottom:  1px solid tomato; background: none;" placeholder="#Skill..." type="text">
+        <button style=" border:0; background-color:white;color:blue;font-size:20px;">
+            <i class="bi bi-search"></i>
+        </button>
+    </div>
     <div class="card-body">
         <table class="table table-bordered">
             <thead class="thead-dark" style="background-color: #3e55df; color: white">
                 <tr>
-                    <th>
+                    <th style="text-align:center;">
                         School Year
                     </th>
-                    <th>
+                    <th style="text-align:center;">
                         Event
                     </th>
-                    <th>
+                    <th style="text-align:center;">
                         Status
                     </th>
-                    <th>
+                    <th style="text-align:center;">
                         Comments
                     </th>
                     <th>
@@ -33,10 +44,24 @@
                 @foreach (var item in Model)
                 {
                     <tr>
-                        <td>@item.User.UserSchoolYears</td>
+                        <td style="text-align:center;">@item.SchoolYear</td>
                         <td><i class="@item.ListEvent.Icon"></i> @item.ListEvent.ListEventName</td>
-                        <td>@item.Status</td>
-                        <td style="text-align:center"><a href="#"><i class="bi bi-bell-fill" style="font-size: 20px; color: #03a9f4"></i></a></td>
+                        <td style="text-align:center;">
+                            @*@if ((int)item.Status == 1)
+                                {
+                                    <a class="btn btn-info rounded-pill">@item.Status</a>
+                                }
+                                else if ((int)item.Status == 2)
+                                {
+                                    <a class="btn btn-warning rounded-pill">@item.Status</a>
+                                }
+                                else
+                                {
+                                    <a class="btn btn-success rounded-pill">@item.Status</a>
+                                }*@
+                            <a class="btn btn-info rounded-pill">@item.Status</a>
+                        </td>
+                        <td style="text-align:center"><a asp-controller="Events" asp-action="Detail" asp-route-eventId="@item.EventId"><i class="bi bi-bell-fill" style="font-size: 20px; color: #03a9f4"></i></a></td>
                         <td style="text-align:center">
                             @if (role)
                             {
@@ -53,7 +78,8 @@
                             else
                             {
                                 <a asp-controller="Events" asp-action="Edit" asp-route-eventId="@item.EventId"><i class="bi bi-pencil-fill" style="font-size: 20px; color: #03a9f4"></i></a>
-                                <a asp-controller="Events" asp-action="Remove" asp-route-eventID="@item.EventId"><i class="bi bi-trash-fill" style="font-size: 20px; color: #e12315 "></i></a>
+                                <a asp-controller="Events" asp-action="Delete" asp-route-eventId="@item.EventId"><i class="bi bi-trash-fill" style="font-size: 20px; color: #e12315 "></i></a>
+
                             }
 
                         </td>

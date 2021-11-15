@@ -31,6 +31,19 @@ namespace StudentManagement.Services
             }
         }
 
+        public bool Edit(Event model)
+        {
+            try
+            {
+                context.Attach(model);
+                return context.SaveChanges() > 0;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
         public Event Get(int eventId)
         {
             return context.Events.Include(p => p.User).FirstOrDefault(p => p.EventId == eventId);

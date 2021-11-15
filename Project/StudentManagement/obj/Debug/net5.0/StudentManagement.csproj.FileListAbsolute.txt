@@ -821,8 +821,9 @@ C:\Users\buunv\Desktop\testproject\Project\StudentManagement\bin\Debug\net5.0\zh
 C:\Users\buunv\Desktop\testproject\Project\StudentManagement\bin\Debug\net5.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
 C:\Users\buunv\Desktop\testproject\Project\StudentManagement\bin\Debug\net5.0\runtimes\win-arm\lib\net5.0\dotnet-aspnet-codegenerator-design.exe
 C:\Users\buunv\Desktop\testproject\Project\StudentManagement\bin\Debug\net5.0\runtimes\win-arm64\lib\net5.0\dotnet-aspnet-codegenerator-design.exe
-C:\Users\buunv\Desktop\testproject\Project\StudentManagement\obj\Debug\net5.0\StudentManagement.csproj.AssemblyReference.cache
 C:\Users\buunv\Desktop\testproject\Project\StudentManagement\obj\Debug\net5.0\Razor\Views\Student\Index.cshtml.g.cs
 C:\Users\buunv\Desktop\testproject\Project\StudentManagement\obj\Debug\net5.0\Razor\Views\Events\Index.cshtml.g.cs
 C:\Users\buunv\Desktop\testproject\Project\StudentManagement\obj\Debug\net5.0\Razor\Views\Events\Create.cshtml.g.cs
 C:\Users\buunv\Desktop\testproject\Project\StudentManagement\obj\Debug\net5.0\Razor\Views\Shared\_CreateEventLayout.cshtml.g.cs
+C:\Users\buunv\Desktop\testproject\Project\StudentManagement\obj\Debug\net5.0\Razor\Views\Events\Edit.cshtml.g.cs
+C:\Users\buunv\Desktop\testproject\Project\StudentManagement\obj\Debug\net5.0\Razor\Views\Events\Detail.cshtml.g.cs

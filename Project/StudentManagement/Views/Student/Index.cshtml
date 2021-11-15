@@ -2,30 +2,46 @@
 
 @{
     ViewData["Title"] = "List Student";
+
+    int max(int[] a, int n)
+    {   
+        int max = a[0];
+        for (int i = 1; i < n; i++)
+            if (max < a[i])
+                max = a[i];
+        return max;
+    }
 }
-<form class="search-form d-flex align-items-center" method="POST" action="#">
-    <input type="text" name="query" placeholder="Search" title="Enter search keyword">
-    <button type="submit" title="Search"><i class="bi bi-search"></i></button>
-</form>
 <div class="card">
+    <div style=" height: 50px;">
+        <input style="height: 65%;border: none; border-bottom:  1px solid tomato; background: none; margin-right: 30px; width: 14%; margin-left: 30px;" placeholder="Search Name..." type="text">
+        <select style="height: 65%;border: none; border-bottom:  1px solid tomato; background: none; width: 5%; margin-right: 30px;" asp-items="@ViewBag.SchoolYearId">
+        </select>
+        <select style="height: 65%;border: none; border-bottom:  1px solid tomato; background: none; width: 8%; margin-right: 30px;" asp-items="@ViewBag.ListEventId">
+        </select>
+        <input style="height: 65%;border: none; border-bottom:  1px solid tomato; background: none;" placeholder="#Skill..." type="text">
+        <button style=" border:0; background-color:white;color:blue;font-size:20px;">
+            <i class="bi bi-search"></i>
+        </button>
+    </div>
     <div class="card-body">
         <table class="table table-bordered">
             <thead class="thead-dark" style="background-color: #3e55df; color: white">
                 <tr>
 
-                    <th>
+                    <th style="text-align:center">
                         Student Code
                     </th>
-                    <th>
+                    <th style="text-align:center">
                         Name
                     </th>
-                    <th>
+                    <th style="text-align:center">
                         School Year
                     </th>
-                    <th>
+                    <th style="text-align:center">
                         Event
                     </th>
-                    <th>
+                    <th style="text-align:center">
                         Skill
                     </th>
                 </tr>
@@ -37,20 +53,25 @@
                     {
                         <tr>
                             <td style="text-align:center">
-                                @item.UserId
+                                @item.StudentCode
                             </td>
-                            <td>
+                            <td style="text-align:center">
                                 @Html.DisplayFor(modelItem => item.Username)
                             </td>
-                            <td>
-                                @item.UserSchoolYears
+                            <td style="text-align:center">
+                                @item.SchoolYears
                             </td>
                             <td>
-                                <a asp-controller="Events" asp-action="Index" asp-route-userId="@item.UserId">@item.Events.Count</a> 
-                            </td>
-                            <td></td>
-                        </tr>
-                    }
+                                <a asp-controller="Events" asp-action="Index" asp-route-userId="@item.UserId">
+                                    @foreach (var evn in item.Events)
+                                    {
+                                    <b>@evn.ListEvent.ListEventName,</b>
+                                    }
+                            </a>
+                        </td>
+                        <td></td>
+                    </tr>
+                }
                 }
             </tbody>
         </table>

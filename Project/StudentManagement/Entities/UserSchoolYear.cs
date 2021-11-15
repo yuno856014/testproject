@@ -7,11 +7,10 @@ namespace StudentManagement.Entities
 {
     public partial class UserSchoolYear
     {
-        public int Id { get; set; }
         public string UserId { get; set; }
-        public int? ScholYearId { get; set; }
+        public int? SchoolYearId { get; set; }
 
-        public virtual SchoolYear ScholYear { get; set; }
+        public virtual SchoolYear SchoolYear { get; set; }
         public virtual User User { get; set; }
     }
 }

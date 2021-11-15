@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using StudentManagement.DBContexts;
 using StudentManagement.Entities;
 using StudentManagement.Models.Events;
+using StudentManagement.Models.Students;
 using StudentManagement.Services;
 using System;
 using System.Collections.Generic;
@@ -34,6 +36,8 @@ namespace StudentManagement.Controllers
         public IActionResult Index(string userId)
         {
             user = userService.Get(userId);
+            ViewData["ListEventId"] = new SelectList(context.ListEvents, "ListEventId", "ListEventName");
+            ViewData["SchoolYearId"] = new SelectList(context.SchoolYears, "SchoolYearId", "SchoolYearName");
             ViewBag.User = user;
             return View(eventService.GetEventbyUserId(userId));
         }
@@ -51,6 +55,7 @@ namespace StudentManagement.Controllers
                 if (ModelState.IsValid)
                 {
                     create.UserId = user.Id;
+                    var schoolYear = context.UserSchoolYears.Include(u => u.SchoolYear).Include(u => u.User).OrderByDescending(u => u.SchoolYearId).FirstOrDefault(m => m.UserId == user.Id).SchoolYear.SchoolYearName;
                     var events = new Event()
                     {
                         UserId = create.UserId,
@@ -59,7 +64,7 @@ namespace StudentManagement.Controllers
                         Activities = create.Activities,
                         PowerDev = create.PowerDev,
                         PowerExerted = create.PowerExerted,
-                        SchoolYear = null,
+                        SchoolYear = schoolYear,
                         Think = create.Think,
                         ListEventId = create.ListEventId
                     };
@@ -69,6 +74,7 @@ namespace StudentManagement.Controllers
                     }
                 }
                 ViewBag.User = user;
+                ViewData["ListEventId"] = new SelectList(context.ListEvents, "ListEventId", "ListEventName");
                 return View(create);
             }
             catch (Exception ex)
@@ -76,8 +82,89 @@ namespace StudentManagement.Controllers
 
                 throw;
             }
-         
-            
+        }
+        [HttpGet]
+        [Route("/Events/Detail/{eventId}")]
+        public IActionResult Detail(int eventId)
+        {
+            var events = eventService.Get(eventId);
+            var edituser = new EditEvents()
+            {
+                EventId = events.EventId,
+                Act = events.Act,
+                Activities = events.Activities,
+                ListEvent = events.ListEvent,
+                PowerDev = events.PowerDev,
+                PowerExerted = events.PowerExerted,
+                Status = events.Status,
+                Think = events.Think,
+                UserId = events.UserId,
+                ListEventId = events.ListEventId
+            };
+            ViewData["ListEventId"] = new SelectList(context.ListEvents, "ListEventId", "ListEventName");
+            ViewBag.User = user;
+            return View(edituser);
+        }
+        [HttpGet]
+        [Route("/Events/Edit/{eventId}")]
+        public IActionResult Edit(int eventId)
+        {
+            var events = eventService.Get(eventId);
+            var edituser = new EditEvents()
+            {
+                EventId = events.EventId,
+                Act = events.Act,
+                Activities = events.Activities,
+                ListEvent = events.ListEvent,
+                PowerDev = events.PowerDev,
+                PowerExerted = events.PowerExerted,
+                Status = events.Status,
+                Think = events.Think,
+                UserId = events.UserId,
+                ListEventId = events.ListEventId
+            };
+            ViewData["ListEventId"] = new SelectList(context.ListEvents, "ListEventId", "ListEventName");
+            ViewBag.User = user;
+            return View(edituser);
+        }
+        [HttpPost]
+        public IActionResult Edit(EditEvents model)
+        {
+            try
+            {
+                if (ModelState.IsValid) 
+                {
+                    var events = eventService.Get(model.EventId);
+                    events.UserId = model.UserId;
+                    events.PowerDev = model.PowerDev;
+                    events.PowerExerted = model.PowerExerted;
+                    events.Think = model.Think;
+                    events.ListEvent = model.ListEvent;
+                    events.Act = model.Act;
+                    events.ListEventId = model.ListEventId;
+                    events.Activities = model.Activities;
+                    if (eventService.Edit(events))
+                    {
+                        return RedirectToAction("Index", "Events", new { userId = model.UserId });
+                    }
+                }
+                ViewBag.User = user;
+                ViewData["ListEventId"] = new SelectList(context.ListEvents, "ListEventId", "ListEventName");
+                return View(model);
+            }
+            catch(Exception ex)
+            {
+                throw;
+            }
+        }
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int eventId)
+        {
+            var events = await context.Events.FindAsync(eventId);
+            if (events != null) context.Events.Remove(events);
+            await context.SaveChangesAsync();
+            return RedirectToAction("Index", "Events", new { userId = user.Id });
         }
     }
 }

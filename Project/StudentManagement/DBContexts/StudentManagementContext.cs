@@ -158,9 +158,12 @@ namespace StudentManagement.DBContexts
 
             modelBuilder.Entity<UserSchoolYear>(entity =>
             {
-                entity.HasOne(d => d.ScholYear)
+                entity.HasKey(e => new { e.UserId, e.SchoolYearId });
+                entity.Property(e => e.UserId).HasColumnName("UserId");
+                entity.Property(e => e.SchoolYearId).HasColumnName("SchoolYearId");
+                entity.HasOne(d => d.SchoolYear)
                     .WithMany(p => p.UserSchoolYears)
-                    .HasForeignKey(d => d.ScholYearId)
+                    .HasForeignKey(d => d.SchoolYearId)
                     .HasConstraintName("FK_UserSchoolYears_SchoolYears");
 
                 entity.HasOne(d => d.User)

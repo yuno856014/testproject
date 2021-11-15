@@ -1,15 +1,18 @@
-﻿@model CreateEvent
-@{
-    ViewData["Title"] = "Create Event";
-    Layout = "~/Views/Shared/_CreateEventLayout.cshtml";
+﻿@model StudentManagement.Models.Students.EditEvents
 
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_CreateEventLayout.cshtml";
 }
+
 <div class="page-wrapper bg-blue p-t-100 p-b-100 font-robo">
     <div class="wrapper wrapper--w680">
         <div class="card card-1">
             <div class="card-heading"></div>
             <div class="card-body">
-                <form asp-controller="Events" asp-action="Create" method="post">
+                <form asp-controller="Events" asp-action="Edit" method="post">
+                    <input type="hidden" asp-for="UserId" />
+                    <input type="hidden" asp-for="EventId" />
                     <div class="form-group row mb-3">
                         <label class="control-label col-sm-2"><strong>Event:</strong></label>
                         <div class="col-sm-12">

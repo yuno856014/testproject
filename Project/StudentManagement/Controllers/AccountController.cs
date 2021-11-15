@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using StudentManagement.Entities;
 using StudentManagement.Models.Accounts;
 using StudentManagement.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace StudentManagement.Controllers
@@ -11,10 +14,13 @@ namespace StudentManagement.Controllers
     public class AccountController : Controller
     {
         private readonly IUserService userService;
+        private readonly UserManager<User> userManager;
+        private static User user = new User();
 
-        public AccountController(IUserService userService)
+        public AccountController(IUserService userService, UserManager<User> userManager)
         {
             this.userService = userService;
+            this.userManager = userManager;
         }
         [HttpGet]
         public IActionResult Login()
@@ -26,6 +32,7 @@ namespace StudentManagement.Controllers
         {
             if (ModelState.IsValid)
             {
+
                 var result = await userService.Login(login);
                 if (result.Success && result.Roles.Length > 0)
                 {
@@ -35,7 +42,7 @@ namespace StudentManagement.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("Privacy", "Home");
+                        return RedirectToAction("Index", "Student");
                     }
                 }
                 ViewBag.Error = result.Message;
