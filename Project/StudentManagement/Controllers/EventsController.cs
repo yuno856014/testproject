@@ -36,9 +36,11 @@ namespace StudentManagement.Controllers
         public IActionResult Index(string userId)
         {
             user = userService.Get(userId);
+            var schoolYear = context.UserSchoolYears.Include(u => u.SchoolYear).Include(u => u.User).OrderByDescending(u => u.SchoolYearId).FirstOrDefault(m => m.UserId == userId).SchoolYear.SchoolYearName;
             ViewData["ListEventId"] = new SelectList(context.ListEvents, "ListEventId", "ListEventName");
             ViewData["SchoolYearId"] = new SelectList(context.SchoolYears, "SchoolYearId", "SchoolYearName");
             ViewBag.User = user;
+            ViewBag.SchoolYear = schoolYear;
             return View(eventService.GetEventbyUserId(userId));
         }
         [HttpGet]

@@ -4,22 +4,36 @@
     var role = User.IsInRole("Doctor");
     ViewData["Title"] = "Events List";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var users = ViewBag.User as StudentManagement.Entities.User;
 }
 <p>
     <a class="btn btn-success" asp-action="Create"><i class="bi bi-plus-lg"></i>Create Event</a>
 </p>
-
 <div class="card">
-    <div style=" height: 50px;">
-        <select style="height: 65%; border: none; border-bottom: 1px solid tomato; background: none; width: 5%; margin-right: 30px; margin-left: 30px;" asp-items="@ViewBag.SchoolYearId">
+    <div class="row" style="margin-left:22px">
+        <span class="col-1">@users.UserName</span>
+        <span class="col-1">(@users.StudentCode)</span>
+        <span class="col-1">@ViewBag.SchoolYear</span>
+    </div>
+    <hr />
+    <div style=" height: 50px;" class="row">
+        <select class="col-1" style="height: 65%; border: none; border-bottom: 1px solid tomato; background: none; margin-right: 30px; margin-left: 30px;" asp-items="@ViewBag.SchoolYearId">
         </select>
-        <select style="height: 65%;border: none; border-bottom:  1px solid tomato; background: none; width: 8%; margin-right: 30px;" asp-items="@ViewBag.ListEventId">
+        <select class="col-1" style="height: 65%;border: none; border-bottom:  1px solid tomato; background: none; width: 8%; margin-right: 30px;" asp-items="@ViewBag.ListEventId">
         </select>
-        <input style="height: 65%;border: none; border-bottom:  1px solid tomato; background: none;" placeholder="#Skill..." type="text">
-        <button style=" border:0; background-color:white;color:blue;font-size:20px;">
+        <div class="col-1" style=" margin-top: 6px;">
+            <strong>Status</strong>
+        </div>
+        <div class="col-md-2" style="margin-left: -65px; margin-top: 6px;">
+            <input id="unverify" type="checkbox"><span style="padding-right:4px;"> Unverify</span>
+            <input id="verifying" type="checkbox"><span style="padding-right:4px;"> Verifying</span>
+            <input id="Verified" type="checkbox"><span style="padding-right:4px;"> Verified</span>
+        </div>
+        <button class="col-1" style="margin-left: -16px; margin-top: -14px; border: 0; background-color: white; color: blue; font-size: 20px;">
             <i class="bi bi-search"></i>
         </button>
     </div>
+    <hr style="margin-top:0px" />
     <div class="card-body">
         <table class="table table-bordered">
             <thead class="thead-dark" style="background-color: #3e55df; color: white">
