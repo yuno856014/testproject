@@ -51,7 +51,7 @@ namespace StudentManagement.Services
 
         public List<Event> GetEventbyUserId(string stuId)
         {
-            return context.Events.Include(p => p.User).Include(p => p.ListEvent).Where(p => p.UserId == stuId).ToList();
+            return context.Events.Include(p => p.User).Include(p => p.ListEvent).Where(p => p.UserId == stuId).OrderByDescending(m => m.EventId).ToList();
         }
     }
 }

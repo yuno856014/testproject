@@ -5,7 +5,7 @@
 }
 <div class="card">
     <div style=" height: 50px;">
-        <input style="height: 65%;border: none; border-bottom:  1px solid tomato; background: none; margin-right: 30px; width: 14%; margin-left: 30px;" placeholder="Search Name..." type="text">
+        <input class="form-control shadow-none" style="height: 65%;border: none; border-bottom:  1px solid tomato; background: none; margin-right: 30px; width: 14%; margin-left: 30px;" placeholder="Search Name..." type="text">
         <select style="height: 65%;border: none; border-bottom:  1px solid tomato; background: none; width: 5%; margin-right: 30px;" asp-items="@ViewBag.SchoolYearId">
         </select>
         <select style="height: 65%;border: none; border-bottom:  1px solid tomato; background: none; width: 8%; margin-right: 30px;" asp-items="@ViewBag.ListEventId">
@@ -56,13 +56,14 @@
                                 <a asp-controller="Events" asp-action="Index" asp-route-userId="@item.UserId">
                                     @foreach (var evn in item.Events)
                                     {
-                                    <b>@evn.ListEvent.ListEventName,</b>
+
+                                        <b>@evn.ListEvent.ListEventName</b>
                                     }
-                            </a>
-                        </td>
-                        <td></td>
-                    </tr>
-                }
+                                </a>
+                            </td>
+                            <td></td>
+                        </tr>
+                    }
                 }
             </tbody>
         </table>

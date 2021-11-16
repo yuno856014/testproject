@@ -34,9 +34,9 @@ namespace StudentManagement.Controllers
 
             var appUsers = userService.Gets();
             var users = new List<Student>();
-
             foreach (var u in appUsers)
             {
+
                 var user = new Student()
                 {
                     UserId = u.Id,
@@ -51,7 +51,6 @@ namespace StudentManagement.Controllers
             }
             ViewData["ListEventId"] = new SelectList(context.ListEvents, "ListEventId", "ListEventName");
             ViewData["SchoolYearId"] = new SelectList(context.SchoolYears, "SchoolYearId", "SchoolYearName");
-
             return View(users);
         }
     }

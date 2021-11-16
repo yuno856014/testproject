@@ -33,15 +33,65 @@ namespace StudentManagement.Controllers
             this.context = context;
         }
         [Route("/Events/Index/{userId}")]
-        public IActionResult Index(string userId)
+        public async Task<IActionResult> Index(string userId, string? SchoolYear, int? ListEvent, bool checkbox1, bool checkbox2, bool checkbox3, int status1 = 1, int status2 = 2, int status3 = 3)
         {
+            var events = from m in context.Events select m;
+
+            if (!string.IsNullOrEmpty(SchoolYear))
+            {
+                events = events.Where(s => s.SchoolYear!.Contains(SchoolYear));
+            }
+            if (!(ListEvent == null))
+            {
+                events = events.Where(s => s.ListEvent.ListEventId == ListEvent);
+            }
+            if (checkbox1 && checkbox2 && !checkbox3)
+            {
+                events = events.Where(s => s.Status == (Enums.EventStatus?)status1 || s.Status == (Enums.EventStatus?)status2);
+            }
+            else if (checkbox1 && !checkbox2 && !checkbox3)
+            {
+                events = events.Where(s => s.Status == (Enums.EventStatus?)status1);
+            }
+            else if (!checkbox1 && checkbox2 && !checkbox3)
+            {
+                events = events.Where(s => s.Status == (Enums.EventStatus?)status2);
+            }
+            else if (checkbox1 && checkbox3 && !checkbox2)
+            {
+                events = events.Where(s => s.Status == (Enums.EventStatus?)status1 || s.Status == (Enums.EventStatus?)status3);
+            }
+            else if (checkbox1 && !checkbox3 && !checkbox2)
+            {
+                events = events.Where(s => s.Status == (Enums.EventStatus?)status1);
+            }
+            else if (!checkbox1 && checkbox3 && !checkbox2)
+            {
+                events = events.Where(s => s.Status == (Enums.EventStatus?)status3);
+            }
+            else if (checkbox2 && checkbox3 && !checkbox1)
+            {
+                events = events.Where(s => s.Status == (Enums.EventStatus?)status2 || s.Status == (Enums.EventStatus?)status3);
+            }
+            else if (checkbox2 && !checkbox3 && !checkbox1)
+            {
+                events = events.Where(s => s.Status == (Enums.EventStatus?)status2);
+            }
+            else if (!checkbox2 && checkbox3 && !checkbox1)
+            {
+                events = events.Where(s => s.Status == (Enums.EventStatus?)status3);
+            }
             user = userService.Get(userId);
+            var eventSearch = new SearchEvent
+            {
+                events = await events.Where(p => p.UserId == userId).OrderByDescending(c => c.EventId).ToListAsync()
+            };
             var schoolYear = context.UserSchoolYears.Include(u => u.SchoolYear).Include(u => u.User).OrderByDescending(u => u.SchoolYearId).FirstOrDefault(m => m.UserId == userId).SchoolYear.SchoolYearName;
             ViewData["ListEventId"] = new SelectList(context.ListEvents, "ListEventId", "ListEventName");
             ViewData["SchoolYearId"] = new SelectList(context.SchoolYears, "SchoolYearId", "SchoolYearName");
             ViewBag.User = user;
             ViewBag.SchoolYear = schoolYear;
-            return View(eventService.GetEventbyUserId(userId));
+            return View(eventSearch);
         }
         [HttpGet]
         public IActionResult Create()
@@ -134,7 +184,7 @@ namespace StudentManagement.Controllers
         {
             try
             {
-                if (ModelState.IsValid) 
+                if (ModelState.IsValid)
                 {
                     var events = eventService.Get(model.EventId);
                     events.UserId = model.UserId;
@@ -154,7 +204,7 @@ namespace StudentManagement.Controllers
                 ViewData["ListEventId"] = new SelectList(context.ListEvents, "ListEventId", "ListEventName");
                 return View(model);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw;
             }

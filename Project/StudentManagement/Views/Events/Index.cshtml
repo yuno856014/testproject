@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Event>
+﻿@model SearchEvent
 @inject SignInManager<User> signInManager
 @{
     var role = User.IsInRole("Doctor");
@@ -7,35 +7,42 @@
     var users = ViewBag.User as StudentManagement.Entities.User;
 }
 <p>
-    <a class="btn btn-success" asp-action="Create"><i class="bi bi-plus-lg"></i>Create Event</a>
+    <a style="color:white" class="btn btn-info rounded-pill" asp-action="Create"><i class="fas fa-plus-circle" style="color:white"></i> Create Event</a>
 </p>
 <div class="card">
+
     <div class="row" style="margin-left:22px">
-        <span class="col-1">@users.UserName</span>
-        <span class="col-1">(@users.StudentCode)</span>
-        <span class="col-1">@ViewBag.SchoolYear</span>
+        <div class="col-12">
+            <span class="mr-2">@users.UserName</span>
+            <span class="m-2">(@users.StudentCode)</span>
+            <span class="m-2">@ViewBag.SchoolYear</span>
+        </div>
     </div>
     <hr />
-    <div style=" height: 50px;" class="row">
-        <select class="col-1" style="height: 65%; border: none; border-bottom: 1px solid tomato; background: none; margin-right: 30px; margin-left: 30px;" asp-items="@ViewBag.SchoolYearId">
-        </select>
-        <select class="col-1" style="height: 65%;border: none; border-bottom:  1px solid tomato; background: none; width: 8%; margin-right: 30px;" asp-items="@ViewBag.ListEventId">
-        </select>
-        <div class="col-1" style=" margin-top: 6px;">
-            <strong>Status</strong>
+    <form asp-controller="Events" asp-action="Index" method="get">
+        <div style=" height: 50px;" class="row">
+            <select class="col-1" style="height: 65%; border: none; border-bottom: 1px solid tomato; background: none; margin-right: 30px; margin-left: 30px;" asp-for="SchoolYear" asp-items="@ViewBag.SchoolYearId">
+                <option value="">List Class</option>
+            </select>
+            <select class="col-2" style="height: 65%;border: none; border-bottom:  1px solid tomato; background: none; width: 8%; margin-right: 30px;" asp-for="ListEvent" asp-items="@ViewBag.ListEventId">
+                <option value="">List Event</option>
+            </select>
+            <div class="col-1" style=" margin-top: 6px;">
+                <strong>Status</strong>
+            </div>
+            <div class="col-md-2" style="margin-left: -65px; margin-top: 6px;">
+                <input asp-for="checkbox1" type="checkbox"><span style="padding-right:4px;"> Unverify</span>
+                <input asp-for="checkbox2" type="checkbox"><span style="padding-right:4px;"> Verifying</span>
+                <input asp-for="checkbox3" type="checkbox"><span style="padding-right:4px;"> Verified</span>
+            </div>
+            <button class="col-1" style="margin-left: -16px; margin-top: -14px; border: 0; background-color: white; color: blue; font-size: 20px;">
+                <i class="bi bi-search"></i>
+            </button>
         </div>
-        <div class="col-md-2" style="margin-left: -65px; margin-top: 6px;">
-            <input id="unverify" type="checkbox"><span style="padding-right:4px;"> Unverify</span>
-            <input id="verifying" type="checkbox"><span style="padding-right:4px;"> Verifying</span>
-            <input id="Verified" type="checkbox"><span style="padding-right:4px;"> Verified</span>
-        </div>
-        <button class="col-1" style="margin-left: -16px; margin-top: -14px; border: 0; background-color: white; color: blue; font-size: 20px;">
-            <i class="bi bi-search"></i>
-        </button>
-    </div>
+    </form>
     <hr style="margin-top:0px" />
     <div class="card-body">
-        <table class="table table-bordered">
+        <table class="table table-bordered" id="mytbEvent">
             <thead class="thead-dark" style="background-color: #3e55df; color: white">
                 <tr>
                     <th style="text-align:center;">
@@ -55,7 +62,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model)
+                @foreach (var item in Model.events)
                 {
                     <tr>
                         <td style="text-align:center;">@item.SchoolYear</td>
@@ -104,4 +111,21 @@
 </div>
 @section Scripts {
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" rel="stylesheet" />
+    <script>
+        $("#mytbEvent").DataTable({
+            "searching": false,
+            "ordering": false,
+            "bLengthChange": false,
+            "bInfo": false,
+            "language": {
+                "paginate": {
+                    "next": "»",
+                    "previous": "«"
+                }
+            }
+        });
+        $(document).ready(function () {
+            $('#mytbEvent').DataTable();
+        });
+    </script>
 }
