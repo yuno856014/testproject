@@ -33,13 +33,13 @@ namespace StudentManagement.Controllers
             this.context = context;
         }
         [Route("/Events/Index/{userId}")]
-        public async Task<IActionResult> Index(string userId, string? SchoolYear, int? ListEvent, bool checkbox1, bool checkbox2, bool checkbox3, int status1 = 1, int status2 = 2, int status3 = 3)
+        public async Task<IActionResult> Index(string userId, int? SchoolYearId, int? ListEvent, bool checkbox1, bool checkbox2, bool checkbox3, int status1 = 1, int status2 = 2, int status3 = 3)
         {
-            var events = from m in context.Events select m;
+            var events = from m in context.Events select m; 
 
-            if (!string.IsNullOrEmpty(SchoolYear))
+            if (!(SchoolYearId==null))
             {
-                events = events.Where(s => s.SchoolYear!.Contains(SchoolYear));
+                events = events.Where(s => s.SchoolYearId == SchoolYearId);
             }
             if (!(ListEvent == null))
             {
@@ -84,9 +84,10 @@ namespace StudentManagement.Controllers
             user = userService.Get(userId);
             var eventSearch = new SearchEvent
             {
-                events = await events.Where(p => p.UserId == userId).OrderByDescending(c => c.EventId).ToListAsync()
+                events = await events.Where(p => p.UserId == userId).OrderByDescending(c => c.SchoolYearId).OrderByDescending(c => c.EventId).ToListAsync()
             };
             var schoolYear = context.UserSchoolYears.Include(u => u.SchoolYear).Include(u => u.User).OrderByDescending(u => u.SchoolYearId).FirstOrDefault(m => m.UserId == userId).SchoolYear.SchoolYearName;
+            ViewBag.ListSchoolYearId = await context.SchoolYears.ToListAsync(); 
             ViewData["ListEventId"] = new SelectList(context.ListEvents, "ListEventId", "ListEventName");
             ViewData["SchoolYearId"] = new SelectList(context.SchoolYears, "SchoolYearId", "SchoolYearName");
             ViewBag.User = user;
@@ -107,7 +108,7 @@ namespace StudentManagement.Controllers
                 if (ModelState.IsValid)
                 {
                     create.UserId = user.Id;
-                    var schoolYear = context.UserSchoolYears.Include(u => u.SchoolYear).Include(u => u.User).OrderByDescending(u => u.SchoolYearId).FirstOrDefault(m => m.UserId == user.Id).SchoolYear.SchoolYearName;
+                    var schoolYear = context.UserSchoolYears.Include(u => u.SchoolYear).Include(u => u.User).OrderByDescending(u => u.SchoolYearId).FirstOrDefault(m => m.UserId == user.Id).SchoolYear.SchoolYearId;
                     var events = new Event()
                     {
                         UserId = create.UserId,
@@ -116,7 +117,7 @@ namespace StudentManagement.Controllers
                         Activities = create.Activities,
                         PowerDev = create.PowerDev,
                         PowerExerted = create.PowerExerted,
-                        SchoolYear = schoolYear,
+                        SchoolYearId = schoolYear,
                         Think = create.Think,
                         ListEventId = create.ListEventId
                     };

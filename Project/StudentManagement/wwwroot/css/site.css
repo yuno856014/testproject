@@ -442,3 +442,55 @@ input[type="radio"] {
         margin-right: 0;
         margin-left: 10px;
     }
+.red_ {
+    border: none;
+    border-bottom: 1px solid tomato;
+    background: none;
+}
+.outlinenone {
+    outline-style: none;
+}
+.space-left {
+    margin-left: 25px;
+}
+.space-right {
+    margin-right: 10px;
+}
+.space-event-right {
+    margin-right: 20px;
+}
+.center{
+    text-align:center
+}
+.sizeicon {
+    font-size: 20px;
+}
+.sizeIconSearch {
+    border: 0;
+    background-color: white;
+    color: #03a9f4;
+    font-size: 18px;
+}
+.dash{
+    border-right:2px solid;
+    color: black;
+}
+.emojionearea {
+    border-radius: 10px !important;
+    margin-left: 10px;
+    margin-right: 10px;
+    height: 5rem;
+}
+
+    .emojionearea .emojionearea-editor {
+        border-radius: 10px;
+        margin-left: 10px;
+        margin-right: 10px;
+        height: 4rem;
+        min-height: 0;
+        padding-left: 0;
+    }
+
+    .emojionearea, .emojionearea.form-control {
+        width: auto;
+    }

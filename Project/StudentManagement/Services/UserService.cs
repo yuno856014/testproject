@@ -36,7 +36,7 @@ namespace StudentManagement.Services
 
         public List<User> Gets()
         {
-            return context.Users.Include(p => p.Events).ToList();
+            return context.Users.Include(p => p.Events).Include(p => p.UserSchoolYears).ToList();
         }
 
         [HttpGet]
@@ -54,7 +54,7 @@ namespace StudentManagement.Services
                 {
                     UserId = string.Empty,
                     Username = string.Empty,
-                    Message = "User does not exist!"
+                    Message = "用户不存在！"
                 };
             }
             var signInResult = await signInManager.PasswordSignInAsync(user, LoginUser.Password, LoginUser.RememberMe, false);
@@ -65,7 +65,7 @@ namespace StudentManagement.Services
                 {
                     UserId = user.Id,
                     Username = user.UserName,
-                    Message = "Logged in successfully!",
+                    Message = "登陆成功！",
                     Roles = roles.ToArray()
                 };
             }
@@ -73,7 +73,7 @@ namespace StudentManagement.Services
             {
                 UserId = string.Empty,
                 Username = string.Empty,
-                Message = "An error occurred, please try again later!"
+                Message = "发生了错误。 请稍后再试！"
             };
         }
 

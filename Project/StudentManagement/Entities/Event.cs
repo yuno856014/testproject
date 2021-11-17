@@ -22,7 +22,7 @@ namespace StudentManagement.Entities
         public string Think { get; set; }
         public int? ListEventId { get; set; }
         public EventStatus? Status { get; set; }
-        public string SchoolYear { get; set; }
+        public int SchoolYearId { get; set; }
 
         public virtual ListEvent ListEvent { get; set; }
         public virtual User User { get; set; }

@@ -72,7 +72,7 @@ namespace StudentManagement.DBContexts
 
                 entity.Property(e => e.PowerExerted).HasMaxLength(250);
 
-                entity.Property(e => e.SchoolYear).HasMaxLength(250);
+                entity.Property(e => e.SchoolYearId).HasMaxLength(250);
 
                 entity.Property(e => e.Think)
                     .HasMaxLength(10)

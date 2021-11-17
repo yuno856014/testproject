@@ -16,7 +16,7 @@ namespace StudentManagement.Models.Events
         public string Think { get; set; }
         public int? ListEventId { get; set; }
         public EventStatus? Status { get; set; }
-        public string SchoolYear { get; set; }
+        public int SchoolYearId { get; set; }
 
         public User User { get; set; }
         public string UserId { get; set; }

@@ -7,11 +7,11 @@
     var users = ViewBag.User as StudentManagement.Entities.User;
 }
 <p>
-    <a style="color:white" class="btn btn-info rounded-pill" asp-action="Create"><i class="fas fa-plus-circle" style="color:white"></i> Create Event</a>
+    <a style="color:white" class="btn btn-info rounded-pill" asp-action="Create"><i class="fas fa-plus-circle" style="color:white"></i> 新規作成</a>
 </p>
 <div class="card">
 
-    <div class="row" style="margin-left:22px">
+    <div class="row" style="margin-left:20px">
         <div class="col-12">
             <span class="mr-2">@users.UserName</span>
             <span class="m-2">(@users.StudentCode)</span>
@@ -19,45 +19,51 @@
         </div>
     </div>
     <hr />
-    <form asp-controller="Events" asp-action="Index" method="get">
-        <div style=" height: 50px;" class="row">
-            <select class="col-1" style="height: 65%; border: none; border-bottom: 1px solid tomato; background: none; margin-right: 30px; margin-left: 30px;" asp-for="SchoolYear" asp-items="@ViewBag.SchoolYearId">
-                <option value="">List Class</option>
-            </select>
-            <select class="col-2" style="height: 65%;border: none; border-bottom:  1px solid tomato; background: none; width: 8%; margin-right: 30px;" asp-for="ListEvent" asp-items="@ViewBag.ListEventId">
-                <option value="">List Event</option>
-            </select>
-            <div class="col-1" style=" margin-top: 6px;">
-                <strong>Status</strong>
-            </div>
-            <div class="col-md-2" style="margin-left: -65px; margin-top: 6px;">
-                <input asp-for="checkbox1" type="checkbox"><span style="padding-right:4px;"> Unverify</span>
-                <input asp-for="checkbox2" type="checkbox"><span style="padding-right:4px;"> Verifying</span>
-                <input asp-for="checkbox3" type="checkbox"><span style="padding-right:4px;"> Verified</span>
-            </div>
-            <button class="col-1" style="margin-left: -16px; margin-top: -14px; border: 0; background-color: white; color: blue; font-size: 20px;">
-                <i class="bi bi-search"></i>
-            </button>
+    <div class="row">
+        <div class="col-12">
+            <form asp-controller="Events" asp-action="Index" method="get">
+                <div class="row">
+                    <div class="col-9">
+                        <select class="red_ space-left space-event-right outlinenone" asp-for="SchoolYearId" asp-items="@ViewBag.SchoolYearId">
+                            <option value="">学年</option>
+                        </select>
+                        <span class="dash space-event-right"></span>
+                        <select class="red_ outlinenone space-event-right" asp-for="ListEvent" asp-items="@ViewBag.ListEventId">
+                            <option value="">イベント</option>
+                        </select>
+                        <span class="dash space-event-right"></span>
+                        <strong class="space-event-right">ステータス</strong>
+                        <input asp-for="checkbox1" type="checkbox"><span class="space-right"> 未確認</span>
+                        <input asp-for="checkbox2" type="checkbox"><span class="space-right"> 確認中</span>
+                        <input asp-for="checkbox3" type="checkbox"><span class="space-right"> 修了</span>
+
+                        <button class="sizeIconSearch">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
         </div>
-    </form>
-    <hr style="margin-top:0px" />
+    </div>
+    <hr />
     <div class="card-body">
         <table class="table table-bordered" id="mytbEvent">
             <thead class="thead-dark" style="background-color: #3e55df; color: white">
                 <tr>
-                    <th style="text-align:center;">
-                        School Year
+                    <th class="center">
+                        学年
                     </th>
-                    <th style="text-align:center;">
-                        Event
+                    <th class="center">
+                        イベント
                     </th>
-                    <th style="text-align:center;">
-                        Status
+                    <th class="center">
+                        ステータス
                     </th>
-                    <th style="text-align:center;">
-                        Comments
+                    <th class="center">
+                        通知
                     </th>
-                    <th>
+                    <th class="center">
+                        アクション
                     </th>
                 </tr>
             </thead>
@@ -65,24 +71,40 @@
                 @foreach (var item in Model.events)
                 {
                     <tr>
-                        <td style="text-align:center;">@item.SchoolYear</td>
-                        <td><i class="@item.ListEvent.Icon"></i> @item.ListEvent.ListEventName</td>
-                        <td style="text-align:center;">
+                        <td class="center">
+                            @foreach (var i in ViewBag.ListSchoolYearId)
+                            {
+                                @if (item.SchoolYearId == i.SchoolYearId)
+                                {
+                                      @i.SchoolYearName
+                                }
+                            }
+                        </td>
+                        <td>
+                            <i class="@item.ListEvent.Icon"></i>
+                            @item.ListEvent.ListEventName
+                        </td>
+                        <td class="center">
                             @if ((int)item.Status == 1)
                             {
-                                <a class="btn btn-info rounded-pill">@item.Status</a>
+                                <a class="btn btn-sm btn-info rounded-pill">未確認</a>
                             }
                             else if ((int)item.Status == 2)
                             {
-                                <a class="btn btn-warning rounded-pill">@item.Status</a>
+                                <a class="btn btn-sm btn-warning rounded-pill">確認中</a>
                             }
                             else
                             {
-                                <a class="btn btn-success rounded-pill">@item.Status</a>
+                                <a class="btn btn-sm btn-success rounded-pill">修了</a>
                             }
                         </td>
-                        <td style="text-align:center"><a asp-controller="Events" asp-action="Detail" asp-route-eventId="@item.EventId"><i class="bi bi-bell-fill" style="font-size: 20px; color: #03a9f4"></i></a></td>
-                        <td style="text-align:center">
+                        <td class="center">
+                            <a asp-controller="Events" asp-action="Detail" asp-route-eventId="@item.EventId">
+                                <i class="bi bi-bell-fill sizeicon" style="color: #03a9f4">
+                                </i>
+                            </a>
+                        </td>
+                        <td class="center">
                             @if (role)
                             {
                                 if ((int)item.Status == 2)
@@ -97,8 +119,8 @@
                             }
                             else
                             {
-                                <a asp-controller="Events" asp-action="Edit" asp-route-eventId="@item.EventId"><i class="bi bi-pencil-fill" style="font-size: 20px; color: #03a9f4"></i></a>
-                                <a asp-controller="Events" asp-action="Delete" asp-route-eventId="@item.EventId"><i class="bi bi-trash-fill" style="font-size: 20px; color: #e12315 "></i></a>
+                                <a asp-controller="Events" asp-action="Edit" asp-route-eventId="@item.EventId"><i class="bi bi-pencil-fill sizeicon" style="color: #03a9f4"></i></a>
+                                <a asp-controller="Events" asp-action="Delete" asp-route-eventId="@item.EventId"><i class="bi bi-trash-fill sizeicon" style="color: #e12315 "></i></a>
 
                             }
 
@@ -122,6 +144,9 @@
                     "next": "»",
                     "previous": "«"
                 }
+            },
+            "oLanguage": {
+                "sEmptyTable": "テーブルにデータがありません"
             }
         });
         $(document).ready(function () {

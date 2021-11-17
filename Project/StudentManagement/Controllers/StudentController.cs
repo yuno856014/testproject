@@ -42,7 +42,7 @@ namespace StudentManagement.Controllers
                     UserId = u.Id,
                     Events = u.Events,
                     Skills = null,
-                    SchoolYears = null,
+                    UserSchoolYears = u.UserSchoolYears,
                     Username = u.UserName,
                     StudentCode = u.StudentCode,
                     Roles = string.Join(',', Task.Run(async () => await userManager.GetRolesAsync(u)).Result.ToArray())
