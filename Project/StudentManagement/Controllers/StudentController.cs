@@ -41,7 +41,7 @@ namespace StudentManagement.Controllers
                 {
                     UserId = u.Id,
                     Events = u.Events,
-                    Skills = null,
+                    Messages = u.Messages,
                     UserSchoolYears = u.UserSchoolYears,
                     Username = u.UserName,
                     StudentCode = u.StudentCode,

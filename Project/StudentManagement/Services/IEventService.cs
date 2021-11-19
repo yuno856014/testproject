@@ -12,5 +12,7 @@ namespace StudentManagement.Services
         List<Event> GetEventbyUserId(string stuId);
         bool Create(Event model);
         bool Edit(Event model);
+        bool Remove(int id);
+        bool ChangeStatus23(int evtId);
     }
 }

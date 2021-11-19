@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "List Student";
+
 }
 <div class="card">
     <div class="row">
@@ -24,15 +25,15 @@
     </div>
     <hr />
     <div class="card-body">
-        <table class="table table-bordered">
+        <table class="table table-bordered" id="mytbEvent">
             <thead class="thead-dark" style="background-color: #3e55df; color: white">
                 <tr>
 
                     <th class="center">
-                        Student Code
+                        学生コード
                     </th>
                     <th class="center">
-                        Name
+                        学生の名前
                     </th>
                     <th class="center">
                         学年
@@ -41,7 +42,7 @@
                         イベント
                     </th>
                     <th class="center">
-                        Skill
+                        ハッシュタグ
                     </th>
                 </tr>
             </thead>
@@ -52,24 +53,44 @@
                     {
                         <tr>
                             <td class="center">
-                                @item.StudentCode
+                                <a style="color:black;" asp-controller="Events" asp-action="Index" asp-route-userId="@item.UserId">@Html.DisplayFor(modelItem => item.StudentCode)</a>
+                            </td>
+                            <td class="center" style="font-weight:600">
+                                <a style="color:black;" asp-controller="Events" asp-action="Index" asp-route-userId="@item.UserId">@Html.DisplayFor(modelItem => item.Username)</a>
                             </td>
                             <td class="center">
-                                @Html.DisplayFor(modelItem => item.Username)
-                            </td>
-                            <td class="center">
-                                @item.UserSchoolYears
-                            </td>
-                            <td>
-                                <a asp-controller="Events" asp-action="Index" asp-route-userId="@item.UserId">
-                                    @foreach (var evn in item.Events)
-                                    {
-
-                                        <b>@evn.ListEvent.ListEventName</b>
-                                    }
+                                <a style="color:black;" asp-controller="Events" asp-action="Index" asp-route-userId="@item.UserId">
+                                    @Html.DisplayFor(modelItem => item.UserSchoolYears.OrderByDescending(u => u.SchoolYearId).FirstOrDefault(m => m.UserId == item.UserId).SchoolYear.SchoolYearName)
                                 </a>
                             </td>
-                            <td></td>
+                            <td>
+
+                                @if (item.Events.Count != 0)
+                                {
+                                    var evtName = string.Empty;
+
+                                    @foreach (var evt in item.Events)
+                                    {
+                                        if (!evtName.Contains(evt.ListEvent.ListEventName))
+                                        {
+                                            evtName += " " + evt.ListEvent.ListEventName;
+                                        }
+
+                                    }
+
+                                    var listEvt = evtName.Split(" ").Skip(1);
+                                    <a style="color:black;font-weight:600" asp-controller="Events" asp-action="Index" asp-route-userId="@item.UserId">@string.Join(", ", listEvt)</a>
+                                }
+                            </td>
+                            @*<td>
+                                @if (item.Messages.Count != 0)
+                                {
+                                    @foreach (var s in item.Messages)
+                                    {
+                                        <a>@s.Skill.SkillName</a>
+                                    }
+                                }
+                            </td>*@
                         </tr>
                     }
                 }
@@ -77,3 +98,25 @@
         </table>
     </div>
 </div>
+@section Scripts {
+    <script>
+        $("#mytbEvent").DataTable({
+            "searching": false,
+            "ordering": false,
+            "bLengthChange": false,
+            "bInfo": false,
+            "language": {
+                "paginate": {
+                    "next": "»",
+                    "previous": "«"
+                }
+            },
+            "oLanguage": {
+                "sEmptyTable": "テーブルにデータがありません"
+            }
+        });
+        $(document).ready(function () {
+            $('#mytbEvent').DataTable();
+        });
+    </script>
+}

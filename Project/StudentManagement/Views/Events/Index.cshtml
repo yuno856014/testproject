@@ -1,14 +1,18 @@
 ﻿@model SearchEvent
 @inject SignInManager<User> signInManager
 @{
-    var role = User.IsInRole("Doctor");
+    var doctor = User.IsInRole("Doctor");
+    var student = User.IsInRole("Student");
     ViewData["Title"] = "Events List";
     Layout = "~/Views/Shared/_Layout.cshtml";
     var users = ViewBag.User as StudentManagement.Entities.User;
 }
-<p>
-    <a style="color:white" class="btn btn-info rounded-pill" asp-action="Create"><i class="fas fa-plus-circle" style="color:white"></i> 新規作成</a>
-</p>
+@if (student)
+{
+    <p>
+        <a style="color: white; border-radius: 50rem !important" class="btn btn-info" asp-action="Create"><i class="fas fa-plus-circle" style="color:white"></i> 新規作成</a>
+    </p>
+}
 <div class="card">
 
     <div class="row" style="margin-left:20px">
@@ -62,9 +66,13 @@
                     <th class="center">
                         通知
                     </th>
-                    <th class="center">
-                        アクション
-                    </th>
+                    @if (doctor || student)
+                    {
+                        <th class="center">
+                            アクション
+                        </th>
+                    }
+
                 </tr>
             </thead>
             <tbody>
@@ -76,7 +84,7 @@
                             {
                                 @if (item.SchoolYearId == i.SchoolYearId)
                                 {
-                                      @i.SchoolYearName
+                                    @i.SchoolYearName
                                 }
                             }
                         </td>
@@ -87,29 +95,29 @@
                         <td class="center">
                             @if ((int)item.Status == 1)
                             {
-                                <a class="btn btn-sm btn-info rounded-pill">未確認</a>
+                                <button class="btn btn-sm btn-info rounded-pill" style="box-shadow:none">未確認</button>
                             }
                             else if ((int)item.Status == 2)
                             {
-                                <a class="btn btn-sm btn-warning rounded-pill">確認中</a>
+                                <button class="btn btn-sm btn-warning rounded-pill" style="box-shadow:none;">確認中</button>
                             }
                             else
                             {
-                                <a class="btn btn-sm btn-success rounded-pill">修了</a>
+                                <button class="btn btn-sm btn-success rounded-pill" style="box-shadow:none;">修了</button>
                             }
                         </td>
                         <td class="center">
-                            <a asp-controller="Events" asp-action="Detail" asp-route-eventId="@item.EventId">
+                            <a asp-controller="Events" asp-action="Edit" asp-route-eventId="@item.EventId">
                                 <i class="bi bi-bell-fill sizeicon" style="color: #03a9f4">
                                 </i>
                             </a>
                         </td>
                         <td class="center">
-                            @if (role)
+                            @if (doctor)
                             {
                                 if ((int)item.Status == 2)
                                 {
-                                    <a href="#"><i class="bi bi-check-lg" style="color: #03a9f4"></i></a>
+                                    <button class="borderbut" onclick="changeStatus23(@item.EventId)"><i class="bi bi-check-lg" style="color: #03a9f4"></i></button>
                                 }
                                 else
                                 {
@@ -117,11 +125,18 @@
 
                                 }
                             }
-                            else
+                            else if (student)
                             {
-                                <a asp-controller="Events" asp-action="Edit" asp-route-eventId="@item.EventId"><i class="bi bi-pencil-fill sizeicon" style="color: #03a9f4"></i></a>
-                                <a asp-controller="Events" asp-action="Delete" asp-route-eventId="@item.EventId"><i class="bi bi-trash-fill sizeicon" style="color: #e12315 "></i></a>
-
+                                if (!((int)item.Status == 3))
+                                {
+                                    <a asp-controller="Events" asp-action="Edit" asp-route-eventId="@item.EventId"><i class="bi bi-pencil-fill sizeicon" style="color: #03a9f4"></i></a>
+                                    <button class="borderbut" onclick="getEvent(@item.EventId)"><i class="bi bi-trash-fill sizeicon" style="color: #e12315 "></i></button>
+                                }
+                                else
+                                {
+                                    <a class="borderbut"><i class="bi bi-pencil-fill sizeicon" style="color: gray"></i></a>
+                                    <button class="borderbut"><i class="bi bi-trash-fill sizeicon" style="color: gray "></i></button>
+                                }
                             }
 
                         </td>
@@ -131,8 +146,64 @@
         </table>
     </div>
 </div>
+<div class="modal fade" id="basicModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">確認</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                イベントを削除します。よろしいですか。
+            </div>
+            <div class="modal-footer">
+                <button id="confirm" type="submit" class="btn btn-info rounded-pill" style="background-color: #2880f5">はい</button>
+                <button type="button" class="btn btn-danger rounded-pill" style="background-color: #f14e86; border-color: #f76999;" data-bs-dismiss="modal">キャンセル</button>
+            </div>
+            <div id="select_detail">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="cfModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">情報</h5>
+                <button onclick="eventRegist.reload()" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                終了しました。
+            </div>
+            <div class="modal-footer">
+                <button onclick="eventRegist.reload()" id="close" type="button" class="btn btn-info rounded-pill" style="background-color: #2880f5 " data-bs-dismiss="modal">閉じる</button>
+            </div>
+            <div id="select_detail">
+            </div>
+        </div>
+    </div>
+</div>
+
+
 @section Scripts {
+    <style>
+        .rounded-pill {
+            color: white;
+            width: 23%;
+        }
+
+        .btn-success {
+            background-color: #19dd21;
+            border-color: #9af39e;
+        }
+
+        .borderbut {
+            border: none;
+            background: none;
+        }
+    </style>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.4.0/bootbox.min.js"></script>
     <script>
         $("#mytbEvent").DataTable({
             "searching": false,
@@ -152,5 +223,47 @@
         $(document).ready(function () {
             $('#mytbEvent').DataTable();
         });
+    </script>
+    <script>
+        var eventRegist = {};
+        function getEvent(id) {
+            $('#basicModal').modal('show');
+            $('button#confirm').click(function (e) {
+                $('#basicModal').modal('hide');
+                $.ajax({
+                    url: "/Events/Delete/" + id,
+                    success: function (result) {
+                        if (result) {
+                            $('#cfModal').modal('show');
+                        }
+                    }
+                });
+            });
+            return false;
+        };
+        eventRegist.reload = function () {
+            location.reload();
+        }
+    </script>
+    <script>
+        var eventRegist = {};
+        function changeStatus23(id) {
+            $('#basicModal').modal('show');
+            $('button#confirm').click(function (e) {
+                $('#basicModal').modal('hide');
+                $.ajax({
+                    url: "/Events/ChangeStatus23/" + id,
+                    success: function (result) {
+                        if (result) {
+                            $('#cfModal').modal('show');
+                        }
+                    }
+                });
+            });
+            return false;
+        };
+        eventRegist.reload = function () {
+            location.reload();
+        }
     </script>
 }

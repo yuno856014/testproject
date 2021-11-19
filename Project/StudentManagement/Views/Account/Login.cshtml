@@ -22,29 +22,42 @@
                 </div>
             }
             <div class="col-12">
-                <label for="yourUsername" class="form-labe">Username</label>
+                <label for="validationCustom03" class="form-labe"><strong>ユーザーネーム</strong></label>
                 <div class="input-group has-validation">
-                    <input type="text" asp-for="Username" class="form-control  shadow-none" id="yourUsername" required>
-                    <div class="invalid-feedback">Please enter your username.</div>
+                    <input type="text" asp-for="Username" class="form-control  shadow-none" id="validationCustom03">
+                    <span style="width:100%" asp-validation-for="Username" class="text-danger"></span>
                 </div>
             </div>
 
             <div class="col-12">
-                <label for="yourPassword" class="form-label">Password</label>
-                <input type="password" asp-for="Password" class="form-control  shadow-none" id="yourPassword" value="Asdf1234!" required>
-                <div class="invalid-feedback">Please enter your password!</div>
+                <label for="yourPassword" class="form-label"><strong>パスワード</strong></label>
+                <input type="password" asp-for="Password" class="form-control  shadow-none" id="password" value="Asdf1234!">
+                <span  style="width:100%" asp-validation-for="Password" class="text-danger"></span>
             </div>
 
             <div class="col-12">
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" name="remember" value="true" id="rememberMe">
-                    <label class="form-check-label" for="rememberMe">Remember me</label>
+                    <label class="form-check-label" for="rememberMe">私を覚えてますか</label>
                 </div>
             </div>
-            <div class="col-12">
-                <button class="btn btn-success w-100" style="background-color: #57b846" type="submit">Login</button>
+            <div class="col-12 row">
+                <div class="col-lg-12 text-center">
+                    <button class="btn btn-info rounded-pill" type="submit">
+                        ログイン
+                    </button>
+                </div>
             </div>
         </form>
 
     </div>
 </div>
+@section Scripts {
+    <style>
+        .btn-info {
+            color: white;
+            background-color: #1180d9;
+            border-color: #075f81;
+        }
+    </style>
+}

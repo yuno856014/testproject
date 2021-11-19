@@ -53,5 +53,36 @@ namespace StudentManagement.Services
         {
             return context.Events.Include(p => p.User).Include(p => p.ListEvent).Where(p => p.UserId == stuId).OrderByDescending(m => m.EventId).ToList();
         }
+
+        public bool Remove(int id)
+        {
+            try
+            {
+                var evt = Get(id);
+                context.Remove(evt);
+                return context.SaveChanges() > 0;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+        public bool ChangeStatus23(int evtId)
+        {
+            try
+            {
+                var events = Get(evtId);
+                if(events.Status == (Enums.EventStatus)2)
+                {
+                    events.Status = (Enums.EventStatus)3;
+                }    
+                context.Attach(events);
+                return context.SaveChanges() > 0;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
     }
 }

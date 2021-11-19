@@ -17,6 +17,7 @@ namespace StudentManagement.Controllers
     public class EventsController : Controller
     {
         private static User user = new User();
+        public static int? evtId;
         private readonly IUserService userService;
         private readonly IEventService eventService;
         private readonly IWebHostEnvironment webHostEnvironment;
@@ -35,9 +36,9 @@ namespace StudentManagement.Controllers
         [Route("/Events/Index/{userId}")]
         public async Task<IActionResult> Index(string userId, int? SchoolYearId, int? ListEvent, bool checkbox1, bool checkbox2, bool checkbox3, int status1 = 1, int status2 = 2, int status3 = 3)
         {
-            var events = from m in context.Events select m; 
+            var events = from m in context.Events select m;
 
-            if (!(SchoolYearId==null))
+            if (!(SchoolYearId == null))
             {
                 events = events.Where(s => s.SchoolYearId == SchoolYearId);
             }
@@ -87,7 +88,7 @@ namespace StudentManagement.Controllers
                 events = await events.Where(p => p.UserId == userId).OrderByDescending(c => c.SchoolYearId).OrderByDescending(c => c.EventId).ToListAsync()
             };
             var schoolYear = context.UserSchoolYears.Include(u => u.SchoolYear).Include(u => u.User).OrderByDescending(u => u.SchoolYearId).FirstOrDefault(m => m.UserId == userId).SchoolYear.SchoolYearName;
-            ViewBag.ListSchoolYearId = await context.SchoolYears.ToListAsync(); 
+            ViewBag.ListSchoolYearId = await context.SchoolYears.ToListAsync();
             ViewData["ListEventId"] = new SelectList(context.ListEvents, "ListEventId", "ListEventName");
             ViewData["SchoolYearId"] = new SelectList(context.SchoolYears, "SchoolYearId", "SchoolYearName");
             ViewBag.User = user;
@@ -137,32 +138,11 @@ namespace StudentManagement.Controllers
             }
         }
         [HttpGet]
-        [Route("/Events/Detail/{eventId}")]
-        public IActionResult Detail(int eventId)
-        {
-            var events = eventService.Get(eventId);
-            var edituser = new EditEvents()
-            {
-                EventId = events.EventId,
-                Act = events.Act,
-                Activities = events.Activities,
-                ListEvent = events.ListEvent,
-                PowerDev = events.PowerDev,
-                PowerExerted = events.PowerExerted,
-                Status = events.Status,
-                Think = events.Think,
-                UserId = events.UserId,
-                ListEventId = events.ListEventId
-            };
-            ViewData["ListEventId"] = new SelectList(context.ListEvents, "ListEventId", "ListEventName");
-            ViewBag.User = user;
-            return View(edituser);
-        }
-        [HttpGet]
         [Route("/Events/Edit/{eventId}")]
         public IActionResult Edit(int eventId)
         {
             var events = eventService.Get(eventId);
+            var mess = context.Messages.Include(m => m.Event).Include(m => m.Skill).Include(m => m.User).FirstOrDefault(m => m.EventId == eventId);
             var edituser = new EditEvents()
             {
                 EventId = events.EventId,
@@ -174,10 +154,12 @@ namespace StudentManagement.Controllers
                 Status = events.Status,
                 Think = events.Think,
                 UserId = events.UserId,
-                ListEventId = events.ListEventId
+                ListEventId = events.ListEventId,
+                Messages = ViewBag.Mess
             };
             ViewData["ListEventId"] = new SelectList(context.ListEvents, "ListEventId", "ListEventName");
             ViewBag.User = user;
+            ViewBag.Mess = mess;
             return View(edituser);
         }
         [HttpPost]
@@ -210,13 +192,25 @@ namespace StudentManagement.Controllers
                 throw;
             }
         }
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(int eventId)
+        [HttpGet]
+        [Route("Events/Delete/{eventId}")]
+        public IActionResult Remove(int eventId)
         {
-            var events = await context.Events.FindAsync(eventId);
-            if (events != null) context.Events.Remove(events);
-            await context.SaveChangesAsync();
+            if (eventService.Remove(eventId))
+            {
+                return RedirectToAction("Index", "Events", new { userId = user.Id });
+            }
+            return RedirectToAction("Index", "Detail", new { userId = user.Id });
+        }
+        [HttpGet]
+        [Route("/Events/ChangeStatus23/{eventId}")]
+        public IActionResult ChangeStatus23(int eventId)
+        {
+            ViewBag.EmployeeId = eventId;
+            if (eventService.ChangeStatus23(eventId))
+            {
+                return RedirectToAction("Index", "Events", new { userId = user.Id });
+            }
             return RedirectToAction("Index", "Events", new { userId = user.Id });
         }
     }

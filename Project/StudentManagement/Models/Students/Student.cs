@@ -15,7 +15,7 @@ namespace StudentManagement.Models
         public string SchoolYears { get; set; }
         public ICollection<UserSchoolYear> UserSchoolYears { get; set; }
         public ICollection<Event> Events { get; set; }
-        public ICollection<Skill> Skills { get; set; }
+        public virtual ICollection<Message> Messages { get; set; }
 
     }
 }

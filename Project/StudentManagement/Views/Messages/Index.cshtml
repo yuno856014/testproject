@@ -1,0 +1,31 @@
+﻿@model IEnumerable<StudentManagement.Entities.Message>
+@inject SignInManager<User> signInManager
+@{
+    var user = new User();
+    var users = ViewBag.User as StudentManagement.Entities.User;
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_CreateEventLayout.cshtml";
+}
+@foreach (var item in Model)
+{
+    <div class="outgoing">
+        <div style="display: flex;  align-items: center;  justify-content: right;">
+
+            <div>
+                <div class="bubble">
+                    <p>@item.Content</p>
+                    <br>
+                    <span style="font-size: small;" class="msg_time_send">@item.Timestamp</span>
+                </div>
+            </div>
+            <div>
+                <div>
+                    <img class="rounded-circle" style="width: 60px" src="@item.User.Avatar" alt="">
+                </div>
+                <div>
+                    <p class="bubble1"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+}
